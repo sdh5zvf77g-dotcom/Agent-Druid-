@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10131a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Scout AI">
+  <meta name="description" content="A privacy-minded, mobile-first AI research agent.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/scout-192.png">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Scout AI</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><div class="brand-mark">S</div><div><strong>Scout AI</strong><small>Research agent · iPhone edition</small></div></div>
+      <button id="settings-open" class="icon-button" aria-label="Settings">⚙</button>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="eyebrow"><span class="pulse"></span> READY TO INVESTIGATE</div>
+        <h1>Find the signal.<br><span>Verify the facts.</span></h1>
+        <p>Give Scout a question. It searches, compares evidence, retries weak searches, and saves the useful discoveries on this device.</p>
+      </section>
+      <section class="composer panel">
+        <label for="research-query">What should I investigate?</label>
+        <textarea id="research-query" rows="3" placeholder="Example: Compare the latest evidence on…"></textarea>
+        <div class="composer-row">
+          <label class="select-wrap"><span>Depth</span><select id="depth"><option value="quick">Quick scan</option><option value="standard" selected>Deep research</option><option value="thorough">Thorough</option></select></label>
+          <button id="research-start" class="primary-button"><span>Start research</span><span aria-hidden="true">↗</span></button>
+        </div>
+        <p class="microcopy">Web results require an internet connection. AI synthesis is optional; configure a model in Settings.</p>
+      </section>
+      <section id="run-panel" class="panel run-panel hidden" aria-live="polite">
+        <div class="section-heading"><div><span class="eyebrow">LIVE WORKSPACE</span><h2 id="run-title">Research in progress</h2></div><button id="stop-run" class="quiet-button">Stop</button></div>
+        <div class="progress-track"><div id="progress-bar"></div></div>
+        <div id="status-text" class="status-text">Preparing research…</div>
+        <div id="activity-log" class="activity-log"></div>
+        <div id="result-area"></div>
+      </section>
+      <section class="section-block">
+        <div class="section-heading"><div><span class="eyebrow">YOUR KNOWLEDGE BASE</span><h2>Saved discoveries</h2></div><button id="export-notes" class="quiet-button">Export</button></div>
+        <div id="saved-list" class="saved-list"></div>
+      </section>
+      <section class="section-block compact">
+        <div class="section-heading"><div><span class="eyebrow">HOW SCOUT WORKS</span><h2>Research loop</h2></div></div>
+        <div class="steps">
+          <div class="step"><span>01</span><div><strong>Search</strong><p>Query multiple public sources and follow useful leads.</p></div></div>
+          <div class="step"><span>02</span><div><strong>Cross-check</strong><p>Compare independent results and flag uncertainty.</p></div></div>
+          <div class="step"><span>03</span><div><strong>Improve the query</strong><p>Retry with alternate terms when evidence is thin.</p></div></div>
+          <div class="step"><span>04</span><div><strong>Save</strong><p>Keep a report and source list locally on your device.</p></div></div>
+        </div>
+      </section>
+      <footer>Scout AI is a client-side research assistant, not a background-running server agent. Keep source links and verify high-stakes claims.</footer>
+    </main>
+  </div>
+
+  <dialog id="settings-dialog">
+    <div class="dialog-head"><div><span class="eyebrow">CONFIGURATION</span><h2>Agent settings</h2></div><button id="settings-close" class="icon-button" aria-label="Close settings">×</button></div>
+    <div class="settings-content">
+      <div class="notice"><strong>Privacy by design</strong><p>Your research notes stay in this browser unless you export them. Model API calls send your prompt and selected research excerpts to the provider you configure. API keys are kept in session memory only and cleared when the tab session ends.</p></div>
+      <label for="provider">Model provider</label>
+      <select id="provider">
+        <option value="none">No model — search and evidence digest only</option>
+        <option value="openai">OpenAI-compatible API</option>
+        <option value="ollama">Ollama / local model endpoint</option>
+      </select>
+      <label for="endpoint">API base URL</label>
+      <input id="endpoint" type="url" placeholder="https://api.openai.com/v1">
+      <label for="model-name">Model name</label>
+      <input id="model-name" type="text" placeholder="e.g. gpt-4.1-mini or qwen2.5:7b">
+      <label for="api-key">API key <span class="muted">(not saved)</span></label>
+      <input id="api-key" type="password" autocomplete="off" placeholder="Paste key for this session only">
+      <p class="microcopy">For Ollama, the server must allow browser CORS and be reachable from your iPhone. A local model on another device is not literally running on the iPhone. Never expose a secret key in a public GitHub repository.</p>
+      <button id="save-settings" class="primary-button full">Save settings</button>
+      <button id="clear-data" class="danger-button full">Delete all saved discoveries</button>
+    </div>
+  </dialog>
+  <script src="./app.js"></script>
+</body>
+</html>
